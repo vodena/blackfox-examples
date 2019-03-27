@@ -1,1 +1,1 @@
-Sitemap: /sitemap.xml
+Sitemap: /blackfox-examples/sitemap.xml
