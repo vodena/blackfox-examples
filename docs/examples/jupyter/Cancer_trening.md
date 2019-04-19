@@ -22,18 +22,41 @@ This is classification problem and the results are two outputs, benign or malign
 * Mitoses.
 
 ### Problem solution:
-Data set contains only 699 observations, so it is relatively small data set. We have divided the data set in two sets, training set, which contains 599 observations and test set, which contains 100 observations. We solved problem in two ways, with Python and Black Fox. We measured the model performance with K-cross validation (K=5) and for feature scaling we used min-max scaler. To stop training at the right time we used Early Stopping.
+Data set contains only 699 observations, so it is relatively small data set. We have divided the data set in two sets, training set, which contains 599 observations and test set, which contains 100 observations.  We solved problem in three ways:
+
+* Manually buiilding ANN,
+* Tune some hyperparameters by using grid search and
+* Employing Black Fox service.
+
+We evaluate the performance of the models using K-fold cross validation. For the purpose of feature scaling, we apply a min max scaler. To stop the training at the right time, Keras' early stopping scheme is applied.
  
 
-#### Update Keras to latest version:
+### Update Keras to latest version:
 
 
 ```python
 !pip install keras==2.2.4
 ```
 
+    Collecting keras==2.2.4
+    [?25l  Downloading https://files.pythonhosted.org/packages/5e/10/aa32dad071ce52b5502266b5c659451cfd6ffcbf14e6c8c4f16c0ff5aaab/Keras-2.2.4-py2.py3-none-any.whl (312kB)
+    [K    100% |████████████████████████████████| 317kB 10.2MB/s ta 0:00:01
+    [?25hRequirement already satisfied: six>=1.9.0 in /home/nbuser/anaconda3_501/lib/python3.6/site-packages (from keras==2.2.4) (1.11.0)
+    Requirement already satisfied: keras-preprocessing>=1.0.5 in /home/nbuser/anaconda3_501/lib/python3.6/site-packages (from keras==2.2.4) (1.0.9)
+    Requirement already satisfied: scipy>=0.14 in /home/nbuser/anaconda3_501/lib/python3.6/site-packages (from keras==2.2.4) (1.1.0)
+    Requirement already satisfied: keras-applications>=1.0.6 in /home/nbuser/anaconda3_501/lib/python3.6/site-packages (from keras==2.2.4) (1.0.7)
+    Requirement already satisfied: h5py in /home/nbuser/anaconda3_501/lib/python3.6/site-packages (from keras==2.2.4) (2.8.0)
+    Requirement already satisfied: numpy>=1.9.1 in /home/nbuser/anaconda3_501/lib/python3.6/site-packages (from keras==2.2.4) (1.14.6)
+    Requirement already satisfied: pyyaml in /home/nbuser/anaconda3_501/lib/python3.6/site-packages (from keras==2.2.4) (3.13)
+    Installing collected packages: keras
+      Found existing installation: Keras 2.2.2
+        Uninstalling Keras-2.2.2:
+          Successfully uninstalled Keras-2.2.2
+    Successfully installed keras-2.2.4
+    
+
 # Data preprocessing
-#### Importing dataset:
+#### Importing data frame
 
 
 ```python
@@ -42,40 +65,221 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
+import matplotlib as mpl
+plt.style.use('ggplot')
 
 # Importing the date as data frame wich we will import with pandas using the read_csv function.
 dataframe = pd.read_csv('CancerData.csv')
 ```
 
-#### Dataset info:
+#### Dataset info
 
 
 ```python
 dataframe.info()
 ```
 
-#### Dataset description:
+    <class 'pandas.core.frame.DataFrame'>
+    RangeIndex: 699 entries, 0 to 698
+    Data columns (total 11 columns):
+    Clump Thickness                699 non-null float64
+    Uniformity of Cell Size        699 non-null float64
+    Uniformity of Cell Shape       699 non-null float64
+    Marginal Adhesion              699 non-null float64
+    Single Epithelial Cell Size    699 non-null float64
+    Bare Nuclei                    699 non-null float64
+    Bland Chromatin                699 non-null float64
+    Normal Nucleoli                699 non-null float64
+    Mitoses                        699 non-null float64
+    Benign                         699 non-null int64
+    Malignant                      699 non-null int64
+    dtypes: float64(9), int64(2)
+    memory usage: 60.1 KB
+    
+
+#### Dataset description
 
 
 ```python
 dataframe.describe()
 ```
 
-#### Dataset histogram :
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Clump Thickness</th>
+      <th>Uniformity of Cell Size</th>
+      <th>Uniformity of Cell Shape</th>
+      <th>Marginal Adhesion</th>
+      <th>Single Epithelial Cell Size</th>
+      <th>Bare Nuclei</th>
+      <th>Bland Chromatin</th>
+      <th>Normal Nucleoli</th>
+      <th>Mitoses</th>
+      <th>Benign</th>
+      <th>Malignant</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>699.000000</td>
+      <td>699.000000</td>
+      <td>699.000000</td>
+      <td>699.000000</td>
+      <td>699.000000</td>
+      <td>699.000000</td>
+      <td>699.000000</td>
+      <td>699.000000</td>
+      <td>699.000000</td>
+      <td>699.000000</td>
+      <td>699.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.441774</td>
+      <td>0.313448</td>
+      <td>0.320744</td>
+      <td>0.280687</td>
+      <td>0.321602</td>
+      <td>0.354363</td>
+      <td>0.343777</td>
+      <td>0.286695</td>
+      <td>0.158941</td>
+      <td>0.655222</td>
+      <td>0.344778</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.281574</td>
+      <td>0.305146</td>
+      <td>0.297191</td>
+      <td>0.285538</td>
+      <td>0.221430</td>
+      <td>0.360186</td>
+      <td>0.243836</td>
+      <td>0.305363</td>
+      <td>0.171508</td>
+      <td>0.475636</td>
+      <td>0.475636</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.100000</td>
+      <td>0.100000</td>
+      <td>0.100000</td>
+      <td>0.100000</td>
+      <td>0.100000</td>
+      <td>0.100000</td>
+      <td>0.100000</td>
+      <td>0.100000</td>
+      <td>0.100000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>0.200000</td>
+      <td>0.100000</td>
+      <td>0.100000</td>
+      <td>0.100000</td>
+      <td>0.200000</td>
+      <td>0.100000</td>
+      <td>0.200000</td>
+      <td>0.100000</td>
+      <td>0.100000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.400000</td>
+      <td>0.100000</td>
+      <td>0.100000</td>
+      <td>0.100000</td>
+      <td>0.200000</td>
+      <td>0.100000</td>
+      <td>0.300000</td>
+      <td>0.100000</td>
+      <td>0.100000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.600000</td>
+      <td>0.500000</td>
+      <td>0.500000</td>
+      <td>0.400000</td>
+      <td>0.400000</td>
+      <td>0.500000</td>
+      <td>0.500000</td>
+      <td>0.400000</td>
+      <td>0.100000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+#### Histograms of the numerical features
 
 
 ```python
 dataframe.hist(figsize=(10,10));
 ```
 
-#### Corelation heatmap:
+
+![png](Cancer_trening_files/Cancer_trening_10_0.png)
+
+
+#### Corelation heatmap
 
 
 ```python
 sns.heatmap(dataframe.corr(), vmin=0, vmax=1);
 ```
 
-####  We will separate data frame into matrix X of features and dependent variable which is matrix y.  
+
+![png](Cancer_trening_files/Cancer_trening_12_0.png)
+
+
+####  Separate the data frame into feature matrix X and dependent variable y
 
 
 ```python
@@ -83,7 +287,7 @@ X = dataframe.iloc[:, 0:9].values
 y = dataframe.iloc[:, 9:11].values
 ```
 
-#### We dont need to scale our data because they are already scaled, so we can split the dataset into the training set and test set.
+#### Split the entire data set into the training set and test set
 
 
 ```python
@@ -91,8 +295,7 @@ from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.05, random_state = 1)
 ```
 
-# Option 1 - manually finding best ANN:
-#### After many times of guessing the parameters for model this are the best one that we have found (you dont see our such enormous effort and huge time to find this parameters).
+# Option 1 - manually build ANN using Keras
 
 
 ```python
@@ -128,20 +331,73 @@ minutes1, seconds1= divmod(time1, 60)
 hours1, minutes1= divmod(minutes1, 60)
 ```
 
-#### We just trained our artificial neural network on the training set and now it's time to make the prediction on the test set.
+    Using TensorFlow backend.
+    
+
+    Train on 464 samples, validate on 200 samples
+    Epoch 1/3000
+    464/464 [==============================] - 1s 1ms/step - loss: 0.4946 - acc: 0.6659 - val_loss: 0.4939 - val_acc: 0.6050
+    Epoch 2/3000
+    464/464 [==============================] - 0s 109us/step - loss: 0.4853 - acc: 0.6918 - val_loss: 0.4895 - val_acc: 0.6050
+    Epoch 3/3000
+    464/464 [==============================] - 0s 128us/step - loss: 0.4772 - acc: 0.6918 - val_loss: 0.4850 - val_acc: 0.6050
+    .
+    .
+    .
+    Epoch 1033/3000
+    464/464 [==============================] - 0s 66us/step - loss: 0.0194 - acc: 0.9806 - val_loss: 0.0400 - val_acc: 0.9600
+    Epoch 1034/3000
+    464/464 [==============================] - 0s 69us/step - loss: 0.0194 - acc: 0.9806 - val_loss: 0.0400 - val_acc: 0.9600
+    Epoch 1035/3000
+    464/464 [==============================] - 0s 69us/step - loss: 0.0194 - acc: 0.9806 - val_loss: 0.0400 - val_acc: 0.9600
+    Restoring model weights from the end of the best epoch
+    Epoch 01035: early stopping
+    
+
+#### Plot loss during training
+
+
+```python
+plt.title('Loss')
+plt.plot(classifier.history.history['loss'], label = 'train', color = 'blue', linewidth=1)
+plt.plot(classifier.history.history['val_loss'], label = 'validation', color = 'red', linewidth=1)
+plt.legend()
+plt.show()
+```
+
+
+![png](Cancer_trening_files/Cancer_trening_20_0.png)
+
+
+#### Plot accuracy during training
+
+
+```python
+plt.title('Accuracy')
+plt.plot(classifier.history.history['acc'], label='train', color = 'blue', linewidth=1)
+plt.plot(classifier.history.history['val_acc'], label='validation', color = 'red', linewidth=1)
+plt.legend()
+plt.show()
+```
+
+
+![png](Cancer_trening_files/Cancer_trening_22_0.png)
+
+
+#### We just trained our artificial neural network on the training set and now it's time to make the prediction on the test set
 
 
 ```python
 y_pred_trained = classifier.predict(X_test)
 #print("Predicted values are:\n\n", y_pred_trained[:10,:])
 
-y_winner = (y_pred_trained[:,0] > y_pred_trained[:,1])
-y_winner = np.where(y_winner == True, 1, 0)
-y_winner_test = (y_test[:,0] > y_test[:,1])
-y_winner_test = np.where(y_winner_test == True, 1, 0)
+y_pred_for_confusionMatrix = (y_pred_trained[:,0] > y_pred_trained[:,1])
+y_pred_for_confusionMatrix = np.where(y_pred_for_confusionMatrix == True, 1, 0)
+y_test_for_confusionMatrix = (y_test[:,0] > y_test[:,1])
+y_test_for_confusionMatrix = np.where(y_test_for_confusionMatrix == True, 1, 0)
 
 from sklearn.metrics import confusion_matrix
-cm = confusion_matrix(y_winner, y_winner_test)
+cm = confusion_matrix(y_pred_for_confusionMatrix, y_test_for_confusionMatrix)
 
 errorOnTestSetTrained = 100*(cm[0,1]+cm[1,0])/y_test.shape[0]
 
@@ -150,8 +406,20 @@ print("\nWe got confusion matrix:\n",cm)
 print("\nTest set error on manually train one network, which we can read in confusion matrix is",errorOnTestSetTrained,"%.")
 ```
 
-# Option 2 - Parameter tuning
-#### We have two type of parameters,  the parameters that are leaned from the model during the training and these are the weights, and we have some other parameters that stay fixed, and this parameters are called the hyperparameters. So for example this hyperparameters are the number of epoch, the bach size, the optimizer or the number of neurons in the layers. When we trained our ANN, we trained it with some fixed values of this hyperparameters, but meybe that by taking some other values we would get to better accuracy over all with K cross validation, and so that's what parameter tuning is all about, it consists of finding the best values of this hyperparameters and we are gonna do this with the technique called grid search that will test several combinations of this values and it will return the best choise that leads to the best accuracy with K cross validation.
+    
+    Time to manually train one network is  52 seconds( 0 hours, 0 minutes and  52 seconds ).
+    
+    We got confusion matrix:
+     [[19  1]
+     [ 0 15]]
+    
+    Test set error on manually train one network, which we can read in confusion matrix is 2.857142857142857 %.
+    
+
+# Option 2 - Parameter tuning by Grid search
+We have two type of model parameters, __the weights__ obtained during training process, and parameters that stay fixed, called the __hyperparameters__. The examples of th hyperparameters are __number of epochs__, __batch size__, __type of optimizer__, __number of layers__, __the number of neurons layers__ etc. The ANN trained in __Option 1__ used fixed values of these hyperparameters, but perhaps some other values would lead us to a better accuracy.
+
+The parameter tuning is all about finding the best values of the hyperparameters. We will try this using a simple technique called __Grid search__ that will test several combinations of hyperparameter and return the best choice that leads to the best accuracy obtained by K-fold cross validation.
 
 
 ```python
@@ -173,7 +441,7 @@ def build_classifier(optimizer):
     return classifier
 
 Tuning_classifier = KerasClassifier(build_fn = build_classifier)
-parameters = {'batch_size' : [10, 25, 32],
+parameters = {'batch_size' : [25, 32],
               'epochs' : [100, 500, 3000],
               'optimizer' : ['adam','rmsprop']}
 
@@ -197,24 +465,44 @@ end2 = time.time()
 time2 = int(end2-start2)
 minutes2, seconds2= divmod(time2, 60)
 hours2, minutes2= divmod(minutes2, 60)
-
-print("\nTime training one network is ", time2,"seconds(",hours2,"hours,",minutes2,"minutes and ",seconds2,"seconds).")
 ```
 
-#### We got our artificial neural network which is in model named "grid_search". Now it's time to make the prediction on the test set.
+    Epoch 1/100
+    597/597 [==============================] - 0s 655us/step - loss: 0.4939 - acc: 0.6566
+    Epoch 2/100
+    597/597 [==============================] - 0s 72us/step - loss: 0.4840 - acc: 0.6566
+    Epoch 3/100
+    597/597 [==============================] - 0s 115us/step - loss: 0.4733 - acc: 0.6566
+    .
+    .
+    .
+    Epoch 2998/3000
+    664/664 [==============================] - 0s 303us/step - loss: 0.0211 - acc: 0.9789
+    Epoch 2999/3000
+    664/664 [==============================] - 0s 364us/step - loss: 0.0211 - acc: 0.9789
+    Epoch 3000/3000
+    664/664 [==============================] - 0s 221us/step - loss: 0.0211 - acc: 0.9789
+    Best parameters are :
+     {'batch_size': 25, 'epochs': 3000, 'optimizer': 'rmsprop'}
+    
+    Best accuracy is :
+     0.9713855377701391
+    
+
+#### Our optimized ANN resides in grid_search. Now it's time to make the prediction on the test set
 
 
 ```python
 y_pred_tuning = grid_search.predict_proba(X_test)
 #print("Predicted values are:\n\n", y_pred_tuning[:10,:])
 
-y_pred_rounded_tuning = (y_pred_tuning[:,0] > y_pred_tuning[:,1])
-y_pred_rounded_tuning = np.where(y_pred_rounded_tuning == True, 1, 0)
-y_winner_test_tuning = (y_test[:,0] > y_test[:,1])
-y_winner_test_tuning = np.where(y_winner_test_tuning == True, 1, 0)
+y_pred_tuning_for_confusionMatrix = (y_pred_tuning[:,0] > y_pred_tuning[:,1])
+y_pred_tuning_for_confusionMatrix = np.where(y_pred_tuning_for_confusionMatrix == True, 1, 0)
+y_test_for_confusionMatrix = (y_test[:,0] > y_test[:,1])
+y_test_for_confusionMatrix = np.where(y_test_for_confusionMatrix == True, 1, 0)
 
 from sklearn.metrics import confusion_matrix
-cm = confusion_matrix(y_winner_test_tuning, y_pred_rounded_tuning)
+cm = confusion_matrix(y_test_for_confusionMatrix, y_pred_tuning_for_confusionMatrix)
 
 errorOnTestSetTuning = 100*(cm[0,1]+cm[1,0])/y_test.shape[0]
 
@@ -223,16 +511,39 @@ print("\nWe got confusion matrix:\n",cm)
 print("\nTest set error with tuning, which we can read in confusion matrix is",errorOnTestSetTuning,"%.")
 ```
 
-# Option 3 - Black fox service finding best ANN:
+    
+    Time needed for tuning is  16497 seconds( 4 hours, 34 minutes and  57 seconds).
+    
+    We got confusion matrix:
+     [[19  0]
+     [ 1 15]]
+    
+    Test set error with tuning, which we can read in confusion matrix is 2.857142857142857 %.
+    
 
-#### Install Black fox service:
+# Option 3 - Optimize ANN using Black Fox service
+
+#### Install Black fox service
 
 
 ```python
-!pip install blackfox-1.0.0.tar.gz
+!pip install git+https://github.com/tmrdja/BlackFoxPython.git
 ```
 
-#### Let's run Black Fox service to find best ANN:
+    Collecting git+https://github.com/tmrdja/BlackFoxPython.git
+      Cloning https://github.com/tmrdja/BlackFoxPython.git to /tmp/pip-req-build-63a1t1vg
+    Requirement already satisfied (use --upgrade to upgrade): blackfox==0.0.2 from git+https://github.com/tmrdja/BlackFoxPython.git in /home/nbuser/anaconda3_501/lib/python3.6/site-packages
+    Requirement already satisfied: urllib3>=1.15 in /home/nbuser/anaconda3_501/lib/python3.6/site-packages (from blackfox==0.0.2) (1.23)
+    Requirement already satisfied: six>=1.10 in /home/nbuser/anaconda3_501/lib/python3.6/site-packages (from blackfox==0.0.2) (1.11.0)
+    Requirement already satisfied: certifi in /home/nbuser/anaconda3_501/lib/python3.6/site-packages (from blackfox==0.0.2) (2018.10.15)
+    Requirement already satisfied: python-dateutil in /home/nbuser/anaconda3_501/lib/python3.6/site-packages (from blackfox==0.0.2) (2.7.5)
+    Building wheels for collected packages: blackfox
+      Building wheel for blackfox (setup.py) ... [?25ldone
+    [?25h  Stored in directory: /tmp/pip-ephem-wheel-cache-gpgp6k92/wheels/46/d5/ca/47789f92af70d12cb6fc5f0c752e911491b82477816f26da21
+    Successfully built blackfox
+    
+
+#### Let's run the Black Fox service to find best ANN for the specific problem. Note that we optimize the architecture, as well!
 
 
 ```python
@@ -273,7 +584,32 @@ print('\nann metadata:')
 print(ann_metadata)
 ```
 
-#### Data that we transfer to Black Fox service are not scaled, the service will scale the date by its own and when he finish his job he won't change the data, but service ofers us command to scale our data for prediction as he did and we will ofcourse use that.
+    Use CTRL + C to stop optimization
+    Uploading data set
+    Starting...
+    2019-03-29 12:01:01.555579 -> Active, Generation: 0/10, Validation set error: 0.000000, Training set error: 0.000000, Epoch: 0, Optimization Id: dedeb7a2-c012-441d-9d33-c46c914d719b
+    2019-03-29 12:06:01.107584 -> Active, Generation: 1/10, Validation set error: 0.044776, Training set error: 0.018425, Epoch: 2999, Optimization Id: dedeb7a2-c012-441d-9d33-c46c914d719b
+    .
+    .
+    .
+    2019-03-29 12:23:30.920344 -> Active, Generation: 9/10, Validation set error: 0.044776, Training set error: 0.018430, Epoch: 2996, Optimization Id: dedeb7a2-c012-441d-9d33-c46c914d719b
+    2019-03-29 12:23:36.372904 -> Finished, Generation: 10/10, Validation set error: 0.044776, Training set error: 0.018432, Epoch: 2808, Optimization Id: dedeb7a2-c012-441d-9d33-c46c914d719b
+    stopped Finished
+    Downloading network b2178768ef603b7b61285d5c0b64616a0976d156
+    Saving network b2178768ef603b7b61285d5c0b64616a0976d156 to OptimizedANNCancer_final.h5
+    
+    ann info:
+    {'dropout': 0.0,
+     'hidden_layers': [{'activation_function': 'Sigmoid', 'neuron_count': 9}],
+     'id': 'b2178768ef603b7b61285d5c0b64616a0976d156',
+     'output_layer_activation_function': 'Sigmoid',
+     'training_algorithm': 'Nadam'}
+    
+    ann metadata:
+    {'__version': 1, 'is_scaler_integrated': False, 'scaler_config': {'input': {'feature_range': [0, 1], 'fit': [[0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]], 'inverse_transform': False}, 'output': {'feature_range': [0, 1], 'fit': [[0.0, 0.0], [1.0, 1.0]], 'inverse_transform': True}}, 'scaler_name': 'MinMaxScaler'}
+    
+
+#### The data set passed to the Black Fox service was not scaled since Black Fox scales inputs automatically. In order to apply obtained ANN in prediction, BlackFox offers the utility function to scale our test set the same way.
 
 
 ```python
@@ -291,7 +627,7 @@ X_test_minMaxScaled_withBF = min_max_x.transform(X_test)
 #print(X_test_minMaxScaled_withBF[:10,:])
 ```
 
-#### Prediction:
+#### Prediction using ANN proposed by Black Fox
 
 
 ```python
@@ -303,7 +639,7 @@ y_pred_BF=model.predict(X_test_minMaxScaled_withBF)
 #print("Predicted values are:\n\n", y_pred_BF[:10,:])
 ```
 
-#### Restoring the results on real values:
+#### Rescale
 
 
 ```python
@@ -319,17 +655,17 @@ y_pred_BF_realValues = min_max_y.inverse_transform(y_pred_BF)
 #print("\nFirst 6 real predicted values are:\n", y_pred_BF_realValues[:6,:])
 ```
 
-#### Calculating the error:
+#### Compute error
 
 
 ```python
-y_winner_BF = (y_pred_BF_realValues[:,0]>y_pred_BF[:,1])
-y_winner_BF = np.where(y_winner_BF == True, 1, 0)
-y_winner_test = (y_test[:,0]>y_test[:,1])
-y_winner_test = np.where(y_winner_test == True, 1, 0)
+y_pred_BF_for_confusionMatrix = (y_pred_BF_realValues[:,0]>y_pred_BF[:,1])
+y_pred_BF_for_confusionMatrix = np.where(y_pred_BF_for_confusionMatrix == True, 1, 0)
+y_test_for_confusionMatrix = (y_test[:,0]>y_test[:,1])
+y_test_for_confusionMatrix = np.where(y_test_for_confusionMatrix == True, 1, 0)
 
 from sklearn.metrics import confusion_matrix
-cm = confusion_matrix(y_winner_BF, y_winner_test)
+cm = confusion_matrix(y_pred_BF_for_confusionMatrix, y_test_for_confusionMatrix)
 
 errorOnTestSetBF = 100*(cm[0,1]+cm[1,0])/y_test.shape[0]
 
@@ -341,41 +677,71 @@ print("\nWe got confusion matrix:\n",cm)
 print("\nTest set error for finding the best ANN by Black Fox service, which we can read in confusion matrix is",errorOnTestSetBF,"%.")
 ```
 
+    
+    Time for finding the best ANN by Black Fox service is  1363 seconds( 0 hours, 22 minutes and  43 seconds).
+    
+    We got confusion matrix:
+     [[19  1]
+     [ 0 15]]
+    
+    Test set error for finding the best ANN by Black Fox service, which we can read in confusion matrix is 2.857142857142857 %.
+    
+
 # RESULTS AND DISCUSSION
 
 
 ```python
-print("\nTime to manually train one network is ", time1,"seconds(",hours1,"hours,",minutes1,"minutes and ",seconds1,"seconds ).")
-print("Time needed for tuning is ", time2,"seconds(",hours2,"hours,",minutes2,"minutes and ",seconds2,"seconds).")
-print("Time for finding the best ANN by Black Fox service is ", time3,"seconds(",hours3,"hours,",minutes3,"minutes and ",seconds3,"seconds).")
-print("\nLet's visualize the results:\n")
+plt.style.use('ggplot')
+mpl.rc('lines', linewidth=1)
+mpl.rc('font', size='8')
 
-objects = ('TrainingANN', 'TuningANN', 'BFservice')
-y_pos = np.arange(len(objects))
-performance = [time1,time2,time3]
+n_groups = 3
+group_1 = (Human_time1, Human_time2, Human_time3)
+group_2 = (time1, time2, time3)
+
  
-plt.bar(y_pos, performance, align='center', alpha=1, color=('blue','red','green'))
-plt.xticks(y_pos, objects)
-plt.ylabel('Time (seconds)')
-plt.title('Time spent on making ANN')
+# create plot
+fig, ax = plt.subplots(figsize=(6,6))
+ax.xaxis.grid(False)
+index = np.arange(n_groups)
+bar_width = 0.25
+space = 0.05
+opacity = 1
+  
+rects1 = plt.bar(index, group_1, bar_width,align ='center',
+alpha=opacity,
+label='Human effort')
+
+rects2 = plt.bar(index, group_2, bar_width,align ='center',bottom =group_1,
+alpha=opacity,
+label='Execution time')
+
+plt.title('Comparison')
+plt.xticks(index, ('Manual', 'Optimized', 'Black Fox service'))
+plt.legend(loc = 'best')
  
+plt.ylabel('Time ( seconds )')
+plt.tight_layout()
 plt.show()
 ```
 
-#### If we want to compare the results by making ANN manually and making it with Black Fox service, we would need to add the time spent in field "TrainingANN" and "TuningANN" in plot above, and that added time would be comparatible with time Black Fox service spent, which are so different, time needed for manually hard work is much larger then time Black Fox spent to make better results, that are given in the plot below.
+
+![png](Cancer_trening_files/Cancer_trening_43_0.png)
+
+
+#### If we want to compare the results by creating ANN manually and by employing the Black Fox service, we would need to add the time spent in field "TrainingANN" and "TuningANN" in plot above, and that added time would be comparatible with time Black Fox service spent, which are so different, time needed for manually hard work is much larger then time Black Fox spent to make better results, that are given in the plot below.
 
 
 ```python
-print("\nTest set error on manually train one network, which we can read in confusion matrix is",errorOnTestSetTrained,"%.")
-print("Test set error with tuning, which we can read in confusion matrix is",errorOnTestSetTuning,"%.")
-print("Test set error for finding the best ANN by Black Fox service, which we can read in confusion matrix is",errorOnTestSetBF,"%.")
-print("\nLet's visualize the results:\n")
+mpl.rc('lines', linewidth=1)
+mpl.rc('font', size='8')
+fig, ax = plt.subplots(figsize=(6,6))
 
-objects = ('TrainingANN', 'TuningANN', 'BFservice')
+objects = ('Manual', 'Optimized', 'Black Fox service')
 y_pos = np.arange(len(objects))
 performance = [errorOnTestSetTrained,errorOnTestSetTuning,errorOnTestSetBF]
  
-plt.bar(y_pos, performance, align='center', alpha=1, color=('blue','red','green'))
+plt.bar(y_pos, performance, align='center', alpha=1, color=('blue','red','green'), width = 0.25)
 plt.xticks(y_pos, objects)
 plt.ylabel('Error (%)')
 plt.title('Test set error')
@@ -383,4 +749,8 @@ plt.title('Test set error')
 plt.show()
 ```
 
-#### Although we measured this three options, actually they are not so comparable, because in Python we had a man sitting in office and programming those neural networks(option 1 and 2) while in Black Fox service (option 3), he imported the same data set and the service did the rest, while he went to rest or dring coffe, for example, so actually, in Black Fox service he wrote few lines of code and thats all of hard work. Results in the given plots above speak for themself. As you can see, Black Fox service gave better results in less time and effort to create approximate results in Python as Black Fox did is immeasurably large.
+
+![png](Cancer_trening_files/Cancer_trening_45_0.png)
+
+
+#### Although we measured this three options, actually they are not so comparable, because in Python we had a man sitting in office and programming those neural networks (options 1 and 2) while in Black Fox service (option 3), he imported the same data set and the service did the rest, while he went to rest or dring coffe, for example, so actually, in Black Fox service he wrote few lines of code and thats all of hard work. Results in the given plots above speak for themself. As you can see, Black Fox service gave better results in less time and effort to create approximate results in Python as Black Fox did is immeasurably large.

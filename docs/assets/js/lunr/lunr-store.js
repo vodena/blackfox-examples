@@ -1,4 +1,9 @@
 var store = [{
+        "title": "Boston Example",
+        "excerpt":" ","categories": [],
+        "tags": [],
+        "url": "/blackfox-examples/examples/boston/",
+        "teaser":null},{
         "title": "Building Example",
         "excerpt":" ","categories": [],
         "tags": [],
