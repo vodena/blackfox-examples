@@ -680,7 +680,7 @@ plt.legend(loc = 'upper left');
 
 
 ```python
-!pip install git+https://github.com/tmrdja/BlackFoxPython.git
+pip install blackfox
 ```
 
     Collecting git+https://github.com/tmrdja/BlackFoxPython.git
@@ -706,7 +706,7 @@ from blackfox import BlackFox
 from blackfox import KerasOptimizationConfig
 from blackfox import OptimizationEngineConfig
 
-blackfox_url = 'http://147.91.204.14:32701'
+blackfox_url = 'http://*******************'
 bf = BlackFox(blackfox_url)
 
 ec = OptimizationEngineConfig(proc_timeout_miliseconds=2000000, population_size=50, max_num_of_generations=10)
