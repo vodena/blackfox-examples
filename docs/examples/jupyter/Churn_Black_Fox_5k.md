@@ -752,7 +752,7 @@ import h5py
 #import numpy as np
 #import pandas as pd
 
-blackfox_url = 'http://147.91.204.14:32700'
+blackfox_url = 'http://*******************'
 bf = BlackFox(blackfox_url)
 
 ec = OptimizationEngineConfig(proc_timeout_miliseconds=2000000, population_size=50, max_num_of_generations=20)
