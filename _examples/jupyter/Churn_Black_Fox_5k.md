@@ -21,7 +21,7 @@ This is classification problem and the results are two outputs, customer will le
 * Estimated salary.
 
 ### Problem solution:
-The entire data set contains 10000 observations. We divide it into two sets, training set, which contains 8000 observations and test set, which contains 2000 observations. We solved problem in three ways:
+The entire data set contains 10000 observations. We randomly picked 5000 observations and we divide it into two sets, training set, which contains 4000 observations and test set, which contains 1000 observations. We solved problem in three ways:
 
 * Manually buiilding ANN,
 * Tune some hyperparameters by using grid search and
