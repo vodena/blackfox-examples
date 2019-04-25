@@ -19,6 +19,11 @@ var store = [{
         "tags": [],
         "url": "/blackfox-examples/examples/churn/",
         "teaser":null},{
+        "title": "Churn Example with 5k data",
+        "excerpt":" ","categories": [],
+        "tags": [],
+        "url": "/blackfox-examples/examples/churn_5k/",
+        "teaser":null},{
         "title": "First version",
         "excerpt":"First version of BlackFox python client is published on pip  ","categories": [],
         "tags": [],
