@@ -7,4 +7,4 @@ layout: single
 
 # Blackfox examples
 
-BlackFox examples description
+<iframe width="800" height="450" src="https://www.youtube.com/embed/lFHAzup_sME?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
