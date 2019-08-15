@@ -1,0 +1,6 @@
+Convert .ipynb to .md but retaining images as base64 embedded
+
+1. Convert to html (images are embedded)
+jupyter nbconvert --to html Churn_Black_Fox.ipynb
+2. Convert html to md
+pandoc Churn_Black_Fox.html --from html+raw_html --to markdown_strict -o Churn_Black_Fox.md

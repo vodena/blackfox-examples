@@ -2,25 +2,25 @@ var store = [{
         "title": "Boston housing",
         "excerpt":" ","categories": [],
         "tags": [],
-        "url": "/blackfox-examples/examples/boston/",
+        "url": "http://localhost:4000/examples/boston/",
         "teaser":null},{
         "title": "Building energy consumption",
         "excerpt":" ","categories": [],
         "tags": [],
-        "url": "/blackfox-examples/examples/building/",
+        "url": "http://localhost:4000/examples/building/",
         "teaser":null},{
         "title": "Breast cancer classification",
         "excerpt":" ","categories": [],
         "tags": [],
-        "url": "/blackfox-examples/examples/cancer/",
+        "url": "http://localhost:4000/examples/cancer/",
         "teaser":null},{
         "title": "Customer churn",
         "excerpt":" ","categories": [],
         "tags": [],
-        "url": "/blackfox-examples/examples/churn/",
+        "url": "http://localhost:4000/examples/churn/",
         "teaser":null},{
         "title": "First version",
         "excerpt":"First version of BlackFox python client is published on pip  ","categories": [],
         "tags": [],
-        "url": "/blackfox-examples/first-version/",
+        "url": "http://localhost:4000/first-version/",
         "teaser":null}]
