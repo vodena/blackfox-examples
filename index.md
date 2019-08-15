@@ -35,4 +35,4 @@ Dive in with your test and train data directly from an interactive Python sessio
    )
 ```
 
-and you are good to go, the optimization will proceed for some time and finally you'll be granted the best posible predictive model. Take a look at our [documentation](/blackfox-examples/documentation/) for details and our [examples](/blackfox-examples/documentation/) in order to see how Black Fox can be used to solve some real-world problems. 
+and you are good to go, the optimization will proceed for some time and finally you'll be granted the best posible predictive model. Take a look at our [documentation](/blackfox-examples/documentation/) for details and our [examples](/blackfox-examples/examples/) in order to see how Black Fox can be used to solve some real-world problems.
