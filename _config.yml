@@ -10,7 +10,7 @@ minimal_mistakes_skin    : "dark" # "default", "air", "aqua", "contrast", "dark"
 
 # Site Settings
 locale                   : "en-US"
-title                    : "BlackFox examples"
+title                    : "Black Fox"
 title_separator          : "-"
 name                     : "Vodéna"
 description              : "BlackFox examples."
@@ -19,7 +19,7 @@ baseurl                  : "/"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 logo                     : "/assets/images/apple-touch-icon.png" # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
-masthead_title           : "BlackFox Examples" # overrides the website title displayed in the masthead, use " " for no title
+masthead_title           : "Black Fox" # overrides the website title displayed in the masthead, use " " for no title
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
 comments:

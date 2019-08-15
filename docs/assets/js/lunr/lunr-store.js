@@ -1,20 +1,20 @@
 var store = [{
-        "title": "Boston Example",
+        "title": "Boston housing",
         "excerpt":" ","categories": [],
         "tags": [],
         "url": "/blackfox-examples/examples/boston/",
         "teaser":null},{
-        "title": "Building Example",
+        "title": "Building energy consumption",
         "excerpt":" ","categories": [],
         "tags": [],
         "url": "/blackfox-examples/examples/building/",
         "teaser":null},{
-        "title": "Cancer Example",
+        "title": "Breast cancer classification",
         "excerpt":" ","categories": [],
         "tags": [],
         "url": "/blackfox-examples/examples/cancer/",
         "teaser":null},{
-        "title": "Churn Example",
+        "title": "Customer churn",
         "excerpt":" ","categories": [],
         "tags": [],
         "url": "/blackfox-examples/examples/churn/",
