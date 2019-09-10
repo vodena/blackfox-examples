@@ -1,6 +1,6 @@
 <!doctype html>
 <!--
-  Minimal Mistakes Jekyll Theme 4.16.0 by Michael Rose
+  Minimal Mistakes Jekyll Theme 4.16.6 by Michael Rose
   Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
   Free for personal and commercial use under the MIT license
   https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
@@ -12,6 +12,8 @@
 <!-- begin _includes/seo.html --><title>Examples - Black Fox</title>
 <meta name="description" content="BlackFox examples.">
 
+
+  <meta name="author" content="Vodéna">
 
 
 <meta property="og:type" content="website">
@@ -37,19 +39,16 @@
 
 
 
-
-
-
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
       "@type": "Person",
       "name": "Vodéna",
-      "url": null,
-      "sameAs": null
-    }
-  </script>
-
+      "url": "/blackfox-examples/"
+    
+  }
+</script>
 
 
 
@@ -97,6 +96,14 @@
   </head>
 
   <body class="layout--collection">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
 
     <!--[if lt IE 9]>
 <div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
@@ -111,13 +118,18 @@
         
           <a class="site-logo" href="/blackfox-examples/"><img src="/blackfox-examples/assets/images/apple-touch-icon.png" alt=""></a>
         
-        <a class="site-title" href="/blackfox-examples/">Black Fox</a>
+        <a class="site-title" href="/blackfox-examples/">
+          Black Fox
+          
+        </a>
         <ul class="visible-links"><li class="masthead__menu-item">
               <a href="/blackfox-examples/posts/" >Posts</a>
             </li><li class="masthead__menu-item">
               <a href="/blackfox-examples/examples/" >Examples</a>
             </li><li class="masthead__menu-item">
               <a href="/blackfox-examples/documentation/" >Documentation</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blackfox-examples/documentation_extras/" >Documentation Extras</a>
             </li></ul>
         
         <button class="search__toggle" type="button">
@@ -237,13 +249,18 @@
 
     
       <div class="search-content">
-        <div class="search-content__inner-wrap"><input type="search" id="search" aria-placeholder="Enter your search term..." class="search-input" tabindex="-1" placeholder="Enter your search term..." />
-    <div id="results" class="results"></div></div>
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
 
       </div>
     
 
-    <div class="page__footer">
+    <div id="footer" class="page__footer">
       <footer>
         <!-- start custom footer snippets -->
 
@@ -251,13 +268,15 @@
         <div class="page__footer-follow">
   <ul class="social-icons">
     
-      <li><strong>Follow:</strong></li>
-    
 
     
       
         
           <li><a href="https://github.com/vodena" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://www.vodena.rs" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i> Vodéna</a></li>
         
       
     
@@ -273,7 +292,7 @@
 
     
   <script src="/blackfox-examples/assets/js/main.min.js"></script>
-  <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js" integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
 
 
 

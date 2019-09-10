@@ -96,7 +96,9 @@ footer:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/vodena"
-
+    - label: "Vodéna"
+      icon: "fas fa-fw fa-link"
+      url: "https://www.vodena.rs"
 
 # Reading Files
 include:

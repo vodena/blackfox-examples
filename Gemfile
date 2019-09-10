@@ -32,3 +32,4 @@ gem "minimal-mistakes-jekyll"
 
 gem 'jekyll-optional-front-matter'
 gem 'jekyll-titles-from-headings'
+gem 'jemoji'
