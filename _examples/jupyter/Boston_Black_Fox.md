@@ -53,8 +53,7 @@ following approaches:
 -   Optimize extreme gradient boost (XGBoost).
 
 Note that we didn't make validation set in Black Fox section below,
-because Black Fox itself makes it from train set we sent to him. this
-text will be removed.
+because Black Fox itself makes it from train set we sent to him.
 
 Data preprocessing<a href="#Data-preprocessing" class="anchor-link">¶</a>
 =========================================================================
